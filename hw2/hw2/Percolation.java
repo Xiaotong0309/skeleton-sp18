@@ -10,8 +10,9 @@ public class Percolation {
     private int openNum;
 
     public Percolation(int N) {
-        if (N < 0)
+        if (N < 0) {
             throw new IllegalArgumentException();
+        }
         this.size = N;
 
         this.sites = new boolean[N][N];
@@ -25,38 +26,48 @@ public class Percolation {
     }
 
     public void open(int row, int col) {
-        if (row < 0 || row > this.size || col < 0 || col > this.size)
-            throw new IllegalArgumentException();
-        if (this.sites[row][col] == true)
+        if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (this.sites[row][col] == true) {
             return;
+        }
         this.openNum++;
         this.sites[row][col] = true;
 
-        if (row > 0 && this.sites[row - 1][col] == true)
+        if (row > 0 && this.sites[row - 1][col] == true) {
             this.disjointSets.union(row * this.size + col, (row - 1) * this.size + col);
-        if (row < this.size - 1 && this.sites[row + 1][col] == true)
+        }
+        if (row < this.size - 1 && this.sites[row + 1][col] == true) {
             this.disjointSets.union(row * this.size + col, (row + 1) * this.size + col);
-        if (col > 0 && this.sites[row][col - 1] == true)
+        }
+        if (col > 0 && this.sites[row][col - 1] == true) {
             this.disjointSets.union(row * this.size + col, row * this.size + col - 1);
-        if (col < this.size - 1 && this.sites[row][col + 1] == true)
+        }
+        if (col < this.size - 1 && this.sites[row][col + 1] == true) {
             this.disjointSets.union(row * this.size + col, row * this.size + col + 1);
+        }
 
-        if (row == 0)
+        if (row == 0) {
             this.disjointSets.union(this.size * this.size, row * this.size + col);
+        }
 
-        if (row == this.size - 1)
+        if (row == this.size - 1) {
             this.disjointSets.union(this.size * this.size + 1, row * this.size + col);
+        }
     }
 
     public boolean isOpen(int row, int col) {
-        if (row < 0 || row > this.size || col < 0 || col > this.size)
-            throw new IllegalArgumentException();
+        if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
+            throw new IndexOutOfBoundsException();
+        }
         return this.sites[row][col] == true;
     }
 
     public boolean isFull(int row, int col) {
-        if (row < 0 || row > this.size || col < 0 || col > this.size)
-            throw new IllegalArgumentException();
+        if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
+            throw new IndexOutOfBoundsException();
+        }
         return this.disjointSets.connected(row * this.size + col, this.size * this.size);
     }
 

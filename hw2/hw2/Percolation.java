@@ -12,7 +12,7 @@ public class Percolation {
     private WeightedQuickUnionUF disjointSets;
     private int openNum;
 
-    public Percolation(int N){
+    public Percolation(int N) throws IllegalArgumentException {
         this.size = N;
 
         this.sites = new state[N][N];
@@ -26,7 +26,7 @@ public class Percolation {
 
     }
 
-    public void open(int row, int col){
+    public void open(int row, int col) throws IllegalArgumentException {
         if(this.sites[row][col] == state.open)
             return;
         this.openNum++;
@@ -48,11 +48,11 @@ public class Percolation {
             this.disjointSets.union(this.size * this.size + 1, row * this.size + col);
     }
 
-    public boolean isOpen(int row, int col){
+    public boolean isOpen(int row, int col) throws IllegalArgumentException {
         return this.sites[row][col] == state.open;
     }
 
-    public boolean isFull(int row, int col){
+    public boolean isFull(int row, int col) throws IllegalArgumentException {
         return this.disjointSets.connected(row * this.size + col, this.size * this.size);
     }
 

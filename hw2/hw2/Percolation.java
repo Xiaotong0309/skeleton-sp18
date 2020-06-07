@@ -11,7 +11,7 @@ public class Percolation {
     private int openNum;
 
     public Percolation(int N) {
-        if (N < 0) {
+        if (N <= 0) {
             throw new IllegalArgumentException();
         }
         this.size = N;

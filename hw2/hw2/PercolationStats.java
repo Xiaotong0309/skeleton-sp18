@@ -9,7 +9,7 @@ public class PercolationStats {
     private double confHigh;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        if (N < 0 || T < 0) {
+        if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException();
         }
         this.mean = 0;
@@ -24,7 +24,7 @@ public class PercolationStats {
                     p.open(rand1 / N, rand1 % N);
                 }
             }
-            double f = (double)p.numberOfOpenSites() / (N * N);
+            double f = (double) p.numberOfOpenSites() / (N * N);
             this.mean += f;
             sample[i] = f;
         }
@@ -32,20 +32,20 @@ public class PercolationStats {
         for (int i = 0; i < T; i++) {
             this.std += Math.pow(sample[i] - this.mean, 2);
         }
-        this.std = Math.sqrt(this.std / (T-1));
+        this.std = Math.sqrt(this.std / (T - 1));
         this.confLow = this.mean - (1.96 * this.std / Math.sqrt(T));
         this.confHigh = this.mean + (1.96 * this.std / Math.sqrt(T));
     }
-    public double mean() {                                       // sample mean of percolation threshold
+    public double mean() {
         return this.mean;
     }
-    public double stddev() {                                     // sample standard deviation of percolation threshold
+    public double stddev() {
         return this.std;
     }
-    public double confidenceLow() {                              // low endpoint of 95% confidence interval
+    public double confidenceLow() {
         return this.confLow;
     }
-    public double confidenceHigh() {                             // high endpoint of 95% confidence interval
+    public double confidenceHigh() {
         return this.confHigh;
     }
 

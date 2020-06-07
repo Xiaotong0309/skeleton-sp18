@@ -6,7 +6,8 @@ public class Percolation {
 
     private int size;
     private boolean[][] sites;
-    private WeightedQuickUnionUF disjointSets;
+    private WeightedQuickUnionUF percSets;
+    private WeightedQuickUnionUF fullSets;
     private int openNum;
 
     public Percolation(int N) {
@@ -21,7 +22,8 @@ public class Percolation {
                 this.sites[i][j] = false;
             }
         }
-        this.disjointSets = new WeightedQuickUnionUF(N * N + 2);
+        this.percSets = new WeightedQuickUnionUF(N * N + 2);
+        this.fullSets = new WeightedQuickUnionUF(N * N + 1);
         this.openNum = 0;
     }
 
@@ -29,31 +31,36 @@ public class Percolation {
         if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
             throw new IndexOutOfBoundsException();
         }
-        if (this.sites[row][col] == true) {
+        if (this.sites[row][col]) {
             return;
         }
         this.openNum++;
         this.sites[row][col] = true;
 
-        if (row > 0 && this.sites[row - 1][col] == true) {
-            this.disjointSets.union(row * this.size + col, (row - 1) * this.size + col);
+        if (row > 0 && this.sites[row - 1][col]) {
+            this.percSets.union(row * this.size + col, (row - 1) * this.size + col);
+            this.fullSets.union(row * this.size + col, (row - 1) * this.size + col);
         }
-        if (row < this.size - 1 && this.sites[row + 1][col] == true) {
-            this.disjointSets.union(row * this.size + col, (row + 1) * this.size + col);
+        if (row < this.size - 1 && this.sites[row + 1][col]) {
+            this.percSets.union(row * this.size + col, (row + 1) * this.size + col);
+            this.fullSets.union(row * this.size + col, (row + 1) * this.size + col);
         }
-        if (col > 0 && this.sites[row][col - 1] == true) {
-            this.disjointSets.union(row * this.size + col, row * this.size + col - 1);
+        if (col > 0 && this.sites[row][col - 1]) {
+            this.percSets.union(row * this.size + col, row * this.size + col - 1);
+            this.fullSets.union(row * this.size + col, row * this.size + col - 1);
         }
-        if (col < this.size - 1 && this.sites[row][col + 1] == true) {
-            this.disjointSets.union(row * this.size + col, row * this.size + col + 1);
+        if (col < this.size - 1 && this.sites[row][col + 1]) {
+            this.percSets.union(row * this.size + col, row * this.size + col + 1);
+            this.fullSets.union(row * this.size + col, row * this.size + col + 1);
         }
 
         if (row == 0) {
-            this.disjointSets.union(this.size * this.size, row * this.size + col);
+            this.percSets.union(this.size * this.size, row * this.size + col);
+            this.fullSets.union(this.size * this.size, row * this.size + col);
         }
 
         if (row == this.size - 1) {
-            this.disjointSets.union(this.size * this.size + 1, row * this.size + col);
+            this.percSets.union(this.size * this.size + 1, row * this.size + col);
         }
     }
 
@@ -61,14 +68,14 @@ public class Percolation {
         if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
             throw new IndexOutOfBoundsException();
         }
-        return this.sites[row][col] == true;
+        return this.sites[row][col];
     }
 
     public boolean isFull(int row, int col) {
         if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
             throw new IndexOutOfBoundsException();
         }
-        return this.disjointSets.connected(row * this.size + col, this.size * this.size);
+        return this.fullSets.connected(row * this.size + col, this.size * this.size);
     }
 
     public int numberOfOpenSites() {
@@ -76,7 +83,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return this.disjointSets.connected(this.size * this.size, this.size * this.size + 1);
+        return this.percSets.connected(this.size * this.size, this.size * this.size + 1);
     }
 
     public static void main(String[] args) {

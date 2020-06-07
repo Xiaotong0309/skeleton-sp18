@@ -64,19 +64,19 @@ public class Percolation {
         return this.disjointSets.connected(this.size * this.size, this.size * this.size + 1);
     }
 
-    public static void main(String[] args){
-        int test1 = 10;
-        Percolation p = new Percolation(test1);
-        for(int i = 0; i < test1; i++){
-            p.open(i, i);
-        }
-        for(int i = 0; i < test1; i++){
-            p.open(i, test1 - i - 1);
-        }
-        for(int i = 0; i < test1; i++){
-            p.open(i, 4);
-        }
-        PercolationVisualizer.draw(p, test1);
-    }
+//    public static void main(String[] args){
+//        int test1 = 10;
+//        Percolation p = new Percolation(test1);
+//        for(int i = 0; i < test1; i++){
+//            p.open(i, i);
+//        }
+//        for(int i = 0; i < test1; i++){
+//            p.open(i, test1 - i - 1);
+//        }
+//        for(int i = 0; i < test1; i++){
+//            p.open(i, 4);
+//        }
+//        PercolationVisualizer.draw(p, test1);
+//    }
 
 }

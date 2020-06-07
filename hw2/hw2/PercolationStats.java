@@ -1,6 +1,6 @@
 package hw2;
 
-import java.util.Random;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class PercolationStats {
     private double mean;
@@ -14,17 +14,14 @@ public class PercolationStats {
         double[] sample = new double[T];
         for(int i = 0; i < T; i++){
             Percolation p = pf.make(N);
-            int count = 0;
             while(!p.percolates()){
                 //randomly open a site
-                Random rand = new Random();
-                int rand1 = rand.nextInt(N*N);
+                int rand1 = StdRandom.uniform(N * N);
                 if(!p.isOpen(rand1 / N, rand1 % N)) {
                     p.open(rand1 / N, rand1 % N);
-                    count++;
                 }
             }
-            double f = (double)count / (N * N);
+            double f = (double)p.numberOfOpenSites() / (N * N);
             this.mean += f;
             sample[i] = f;
         }
@@ -49,11 +46,11 @@ public class PercolationStats {
         return this.confHigh;
     }
 
-    public static void main(String[] args){
-        PercolationStats s = new PercolationStats(100, 10000, new PercolationFactory());
-        System.out.println("Mean: " + s.mean() +
-                " Stddev: " + s.stddev() +
-                " ConfLow: " + s.confidenceLow() +
-                " ConfHigh: " + s.confidenceHigh());
-    }
+//    public static void main(String[] args){
+//        PercolationStats s = new PercolationStats(100, 10000, new PercolationFactory());
+//        System.out.println("Mean: " + s.mean() +
+//                " Stddev: " + s.stddev() +
+//                " ConfLow: " + s.confidenceLow() +
+//                " ConfHigh: " + s.confidenceHigh());
+//    }
 }

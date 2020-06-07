@@ -8,7 +8,9 @@ public class PercolationStats {
     private double confLow;
     private double confHigh;
 
-    public PercolationStats(int N, int T, PercolationFactory pf) throws IllegalArgumentException {
+    public PercolationStats(int N, int T, PercolationFactory pf){
+        if(N < 0)
+            throw new IllegalArgumentException();
         this.mean = 0;
         this.std = 0;
         double[] sample = new double[T];
